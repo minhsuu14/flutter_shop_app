@@ -13,7 +13,7 @@ class ProductManagerItem extends StatelessWidget {
       child: ListTile(
         leading: CircleAvatar(backgroundImage: NetworkImage(imgUrl)),
         trailing: SizedBox(
-          width: 100,
+          width: 120,
           child: Row(
             children: [
               IconButton(onPressed: () {}, icon: const Icon(Icons.edit)),
