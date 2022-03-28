@@ -41,57 +41,65 @@ class _EditProductScreenState extends State<EditProductScreen> {
       appBar: AppBar(
         title: const Text('Product Editing'),
       ),
-      body: Form(
-          child: SingleChildScrollView(
-        child: Column(
-          children: [
-            TextFormField(
-              decoration: const InputDecoration(label: Text('Title')),
-              textInputAction: TextInputAction.done,
-              onFieldSubmitted: (_) =>
-                  FocusScope.of(context).requestFocus(_priceFocusNode),
-            ),
-            TextFormField(
-              decoration: const InputDecoration(label: Text('Price')),
-              textInputAction: TextInputAction.done,
-              keyboardType: TextInputType.number,
-              focusNode: _descriptionFocusNode,
-              onFieldSubmitted: (_) =>
-                  FocusScope.of(context).requestFocus(_descriptionFocusNode),
-            ),
-            TextFormField(
-              decoration: const InputDecoration(label: Text('Description')),
-              textInputAction: TextInputAction.done,
-              keyboardType: TextInputType.multiline,
-              focusNode: _descriptionFocusNode,
-            ),
-            Row(
-              children: [
-                Container(
-                  height: 100,
-                  width: 100,
-                  decoration: BoxDecoration(
-                      border: Border.all(
-                    color: Colors.grey,
-                  )),
-                  margin: const EdgeInsets.all(5),
-                  child: _imgUrlController.text.isEmpty
-                      ? const Text('Enter the image URL')
-                      : Image.network(_imgUrlController.text),
-                ),
-                Expanded(
-                  child: TextFormField(
-                    decoration: const InputDecoration(label: Text('Image URL')),
-                    textInputAction: TextInputAction.done,
-                    focusNode: _imgUrlFocusNode,
-                    controller: _imgUrlController,
+      body: Padding(
+        padding: const EdgeInsets.all(10),
+        child: Form(
+            child: SingleChildScrollView(
+          child: Column(
+            children: [
+              TextFormField(
+                decoration: const InputDecoration(label: Text('Title')),
+                textInputAction: TextInputAction.done,
+                onFieldSubmitted: (_) =>
+                    FocusScope.of(context).requestFocus(_priceFocusNode),
+              ),
+              TextFormField(
+                decoration: const InputDecoration(label: Text('Price')),
+                textInputAction: TextInputAction.done,
+                keyboardType: TextInputType.number,
+                focusNode: _priceFocusNode,
+                onFieldSubmitted: (_) =>
+                    FocusScope.of(context).requestFocus(_descriptionFocusNode),
+              ),
+              TextFormField(
+                decoration: const InputDecoration(label: Text('Description')),
+                textInputAction: TextInputAction.done,
+                keyboardType: TextInputType.multiline,
+                focusNode: _descriptionFocusNode,
+              ),
+              const SizedBox(
+                height: 10,
+              ),
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.end,
+                children: [
+                  Container(
+                    height: 100,
+                    width: 100,
+                    decoration: BoxDecoration(
+                        border: Border.all(
+                      color: Colors.grey,
+                    )),
+                    margin: const EdgeInsets.all(5),
+                    child: _imgUrlController.text.isEmpty
+                        ? const Text('Enter the image URL')
+                        : Image.network(_imgUrlController.text),
                   ),
-                ),
-              ],
-            )
-          ],
-        ),
-      )),
+                  Expanded(
+                    child: TextFormField(
+                      decoration:
+                          const InputDecoration(label: Text('Image URL')),
+                      textInputAction: TextInputAction.done,
+                      focusNode: _imgUrlFocusNode,
+                      controller: _imgUrlController,
+                    ),
+                  ),
+                ],
+              )
+            ],
+          ),
+        )),
+      ),
     );
   }
 }

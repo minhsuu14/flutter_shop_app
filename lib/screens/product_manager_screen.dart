@@ -4,6 +4,7 @@ import '../widgets/app_drawer.dart';
 import '../providers/product_provider.dart';
 import '../models/product.dart';
 import '../widgets/product_manager_item.dart';
+import '../screens/edit_product_screen.dart';
 
 class ProductManagerScreen extends StatelessWidget {
   static const routeName = '/product-manager-screen';
@@ -29,6 +30,15 @@ class ProductManagerScreen extends StatelessWidget {
         padding: const EdgeInsets.all(8),
       ),
       drawer: const AppDrawer(),
+      floatingActionButton: FloatingActionButton(
+        child: const Text(
+          '+',
+          style: TextStyle(fontSize: 24, color: Colors.white60),
+        ),
+        onPressed: () =>
+            Navigator.of(context).pushNamed(EditProductScreen.routeName),
+        backgroundColor: Theme.of(context).primaryColor,
+      ),
     );
   }
 }
