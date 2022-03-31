@@ -39,8 +39,9 @@ class _OrderItemState extends State<OrderItem> {
                   : const Icon(Icons.expand_circle_down),
             ),
           ),
-          if (isExpand)
-            Column(children: [
+          Visibility(
+            visible: isExpand,
+            child: Column(children: [
               const Divider(),
               Container(
                 height: min(widget.ord.products.length * 20 + 15, 100),
@@ -53,6 +54,7 @@ class _OrderItemState extends State<OrderItem> {
                 ),
               ),
             ]),
+          ),
         ],
       ),
       margin: const EdgeInsets.all(8),
