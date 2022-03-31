@@ -21,11 +21,31 @@ class _EditProductScreenState extends State<EditProductScreen> {
       imageUrl: '',
       price: 0,
       title: '');
-
+// add listener for imgURL focusnode, when lose focus then trigger the function to preview the image.
   @override
   void initState() {
     _imgUrlFocusNode.addListener((imgUrlListener));
     super.initState();
+  }
+
+// Show preview image
+  void imgUrlListener() {
+    if (!_imgUrlFocusNode.hasFocus) {
+      if ((!_imgUrlController.text.startsWith('http') &&
+              !_imgUrlController.text.startsWith('https')) ||
+          (!_imgUrlController.text.endsWith('.jpg') &&
+              !_imgUrlController.text.endsWith('.png') &&
+              !_imgUrlController.text.endsWith('.jpeg'))) {
+        return;
+      }
+      setState(() {});
+    }
+  }
+
+// Save form state to collect user input
+  void _saveForm() {
+    if (!_formkey.currentState!.validate()) return;
+    _formkey.currentState?.save();
   }
 
   @override
@@ -35,16 +55,6 @@ class _EditProductScreenState extends State<EditProductScreen> {
     _imgUrlFocusNode.dispose();
     _imgUrlController.dispose();
     super.dispose();
-  }
-
-  void imgUrlListener() {
-    if (_imgUrlController.text.isNotEmpty) {
-      setState(() {});
-    }
-  }
-
-  void _saveForm() {
-    _formkey.currentState?.save();
   }
 
   @override
@@ -73,6 +83,12 @@ class _EditProductScreenState extends State<EditProductScreen> {
                           imageUrl: _product.imageUrl,
                           price: _product.price);
                     },
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Please fill out the form.';
+                      }
+                      return null;
+                    },
                   ),
                   TextFormField(
                     decoration: const InputDecoration(label: Text('Price')),
@@ -89,6 +105,18 @@ class _EditProductScreenState extends State<EditProductScreen> {
                           imageUrl: _product.imageUrl,
                           price: double.parse(value!));
                     },
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Please fill out the form.';
+                      }
+                      if (double.tryParse(value) == null) {
+                        return 'Please enter a valid number.';
+                      }
+                      if (double.parse(value) <= 0) {
+                        return 'Please enter a number greater than zero.';
+                      }
+                      return null;
+                    },
                   ),
                   TextFormField(
                     decoration:
@@ -103,6 +131,12 @@ class _EditProductScreenState extends State<EditProductScreen> {
                           title: _product.title,
                           imageUrl: _product.imageUrl,
                           price: _product.price);
+                    },
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Please fill out the form.';
+                      }
+                      return null;
                     },
                   ),
                   const SizedBox(
@@ -137,6 +171,18 @@ class _EditProductScreenState extends State<EditProductScreen> {
                                 title: _product.title,
                                 imageUrl: value!,
                                 price: _product.price);
+                          },
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return 'Please enter image URL.';
+                            }
+                            if (!value.startsWith('http') &&
+                                    !value.startsWith('https') ||
+                                !value.endsWith('.jpg') &&
+                                    !value.endsWith('.png') &&
+                                    !value.endsWith('.jpeg')) {
+                              return 'Please enter valid URL.';
+                            }
                           },
                           onFieldSubmitted: (_) => _saveForm(),
                         ),
