@@ -22,6 +22,7 @@ class ProductManagerScreen extends StatelessWidget {
         child: ListView.builder(
             itemBuilder: (_, i) {
               return ProductManagerItem(
+                id: products[i].id,
                 title: products[i].title,
                 imgUrl: products[i].imageUrl,
               );
