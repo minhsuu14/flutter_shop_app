@@ -1,3 +1,5 @@
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 import 'package:flutter/material.dart';
 import '../models/product.dart';
 
@@ -49,20 +51,39 @@ class ProductProvider with ChangeNotifier {
     return _items.where((prod) => prod.isFavorite).toList();
   }
 
-  void addProduct(Product product) {
-    final newProduct = Product(
-        id: product.id,
-        description: product.description,
-        imageUrl: product.imageUrl,
-        price: product.price,
-        title: product.title);
-    _items.add(newProduct);
-    notifyListeners();
+  Future<void> addProduct(Product product) async {
+    try {
+      var url = Uri.parse(
+          'https://flutter-shop-app-20e7e-default-rtdb.firebaseio.com/products.json');
+      final response = await http.post(url,
+          body: json.encode({
+            'title': product.title,
+            'description': product.description,
+            'price': product.price,
+            'isFavorite': product.isFavorite
+          }));
+      final newProduct = Product(
+          id: json.decode(response.body)['name'].toString(),
+          description: product.description,
+          imageUrl: product.imageUrl,
+          price: product.price,
+          title: product.title);
+      _items.add(newProduct);
+      notifyListeners();
+    } catch (error) {
+      print(error);
+      rethrow;
+    }
   }
 
   void updateProduct(String id, Product newProduct) {
     final updateProdIndex = _items.indexWhere((element) => element.id == id);
     _items[updateProdIndex] = newProduct;
+    notifyListeners();
+  }
+
+  void deleteProduct(String id) {
+    _items.removeWhere((element) => element.id == id);
     notifyListeners();
   }
 }

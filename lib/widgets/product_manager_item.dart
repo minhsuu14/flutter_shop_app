@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_shop_app/screens/edit_product_screen.dart';
+import '../providers/product_provider.dart';
+import '../screens/edit_product_screen.dart';
+import 'package:provider/provider.dart';
 
 class ProductManagerItem extends StatelessWidget {
   final String id;
@@ -25,7 +27,35 @@ class ProductManagerItem extends StatelessWidget {
                   },
                   icon: const Icon(Icons.edit)),
               IconButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    final product =
+                        Provider.of<ProductProvider>(context, listen: false);
+                    showDialog(
+                        context: context,
+                        builder: (context) {
+                          return AlertDialog(
+                            actions: [
+                              TextButton(
+                                onPressed: () =>
+                                    Navigator.of(context).pop(context),
+                                child: const Text('No'),
+                              ),
+                              TextButton(
+                                onPressed: () {
+                                  Navigator.of(context).pop(context);
+                                  product.deleteProduct(id);
+                                },
+                                child: const Text('Yes'),
+                              ),
+                            ],
+                            title: const Text('Alert'),
+                            content: const SingleChildScrollView(
+                              child:
+                                  Text('Do you want to remove this product ?'),
+                            ),
+                          );
+                        });
+                  },
                   icon: Icon(
                     Icons.delete,
                     color: Theme.of(context).errorColor,
