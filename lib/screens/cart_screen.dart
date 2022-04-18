@@ -12,7 +12,7 @@ class CartScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final carts = Provider.of<CartProvider>(context);
-    final double total = carts.total();
+    final String total = carts.total().toStringAsFixed(2);
 
     return Scaffold(
       appBar: AppBar(
