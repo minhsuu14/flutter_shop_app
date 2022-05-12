@@ -2,6 +2,7 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import '../models/product.dart';
+import '../models/exception.dart';
 
 class ProductProvider with ChangeNotifier {
   List<Product> _items = [
@@ -101,14 +102,34 @@ class ProductProvider with ChangeNotifier {
     }
   }
 
-  void updateProduct(String id, Product newProduct) {
+  Future<void> updateProduct(String id, Product newProduct) async {
     final updateProdIndex = _items.indexWhere((element) => element.id == id);
+    final url = Uri.parse(
+        'https://flutter-shop-app-20e7e-default-rtdb.firebaseio.com/products/$id.json/');
+    await http.patch(url,
+        body: json.encode({
+          'title': newProduct.title,
+          'description': newProduct.description,
+          'imageUrl': newProduct.imageUrl,
+          'price': newProduct.price,
+        }));
     _items[updateProdIndex] = newProduct;
     notifyListeners();
   }
 
-  void deleteProduct(String id) {
-    _items.removeWhere((element) => element.id == id);
+  Future<void> deleteProduct(String id) async {
+    final url = Uri.parse(
+        'https://flutter-shop-app-20e7e-default-rtdb.firebaseio.com/products/$id.json/');
+    final existedProductIndex =
+        _items.indexWhere((element) => element.id == id);
+    var tempProduct = _items[existedProductIndex];
+    _items.removeAt(existedProductIndex);
     notifyListeners();
+    final response = await http.delete(url);
+    if (response.statusCode >= 400) {
+      _items.insert(existedProductIndex, tempProduct);
+      notifyListeners();
+      throw HttpException("There was an error occured !");
+    }
   }
 }

@@ -41,9 +41,16 @@ class ProductManagerItem extends StatelessWidget {
                                 child: const Text('No'),
                               ),
                               TextButton(
-                                onPressed: () {
+                                onPressed: () async {
+                                  try {
+                                    await product.deleteProduct(id);
+                                  } catch (error) {
+                                    ScaffoldMessenger.of(context)
+                                        .showSnackBar(const SnackBar(
+                                      content: Text('An error has occured !'),
+                                    ));
+                                  }
                                   Navigator.of(context).pop(context);
-                                  product.deleteProduct(id);
                                 },
                                 child: const Text('Yes'),
                               ),
