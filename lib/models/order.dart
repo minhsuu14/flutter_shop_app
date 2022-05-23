@@ -60,8 +60,8 @@ class OrderProvider with ChangeNotifier {
     data.forEach((orderId, orderData) {
       loadedOrder.add(Order(
           id: orderId,
-          date: orderData['date'],
-          products: (orderData['products'] as List<Map>)
+          date: DateTime.parse(orderData['date']),
+          products: (orderData['products'] as List<dynamic>)
               .map((cart) => CartItem(
                   id: cart['id'],
                   price: cart['price'],

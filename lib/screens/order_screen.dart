@@ -14,33 +14,43 @@ class OrderScreen extends StatefulWidget {
 }
 
 class _OrderScreenState extends State<OrderScreen> {
-  bool _isLoading = false;
+  Future? _orderFuture;
+
+  Future _orderObtainFuture() {
+    return Provider.of<OrderProvider>(context, listen: false).fetchAndSet();
+  }
+
   @override
-  //fetch data from firebase
   void initState() {
-    Future.delayed(Duration.zero).then((_) async {
-      setState(() {
-        _isLoading = true;
-      });
-      await Provider.of<OrderProvider>(context, listen: false).fetchAndSet();
-      setState(() {
-        _isLoading = false;
-      });
-    });
+    _orderFuture = _orderObtainFuture();
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    final orders = Provider.of<OrderProvider>(context);
-
     return Scaffold(
       appBar: AppBar(
         title: const Text('My Orders'),
       ),
-      body: ListView.builder(
-        itemBuilder: (context, i) => OrderItem(ord: orders.items[i]),
-        itemCount: orders.items.length,
+      body: FutureBuilder(
+        future: _orderFuture,
+        builder: (context, dataSnapshot) {
+          if (dataSnapshot.connectionState == ConnectionState.waiting) {
+            return const Center(
+              child: CircularProgressIndicator(),
+            );
+          }
+          if (dataSnapshot.hasError) {
+            return Text('${dataSnapshot.error}');
+          } else {
+            return Consumer<OrderProvider>(
+              builder: ((_, value, child) => ListView.builder(
+                    itemBuilder: (context, i) => OrderItem(ord: value.items[i]),
+                    itemCount: value.items.length,
+                  )),
+            );
+          }
+        },
       ),
       drawer: const AppDrawer(),
     );
