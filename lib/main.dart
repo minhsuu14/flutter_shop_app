@@ -12,7 +12,7 @@ import './screens/order_screen.dart';
 import './screens/product_manager_screen.dart';
 import './screens/edit_product_screen.dart';
 import './screens/auth_screen.dart';
-import './providers/product_provider.dart';
+import 'models/product_provider.dart';
 
 void main() {
   runApp(MyApp());
