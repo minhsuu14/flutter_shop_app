@@ -3,6 +3,7 @@ import 'package:flutter_shop_app/models/cart.dart';
 import 'package:flutter_shop_app/screens/product_detail_screen.dart';
 import 'package:provider/provider.dart';
 import '../models/product.dart';
+import '../models/auth.dart';
 
 class ProductItem extends StatelessWidget {
   const ProductItem({Key? key}) : super(key: key);
@@ -10,6 +11,7 @@ class ProductItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final product = Provider.of<Product>(context);
+    final auth = Provider.of<AuthProvider>(context, listen: false);
     return ClipRRect(
       borderRadius: BorderRadius.circular(10),
       child: GridTile(
@@ -31,7 +33,8 @@ class ProductItem extends StatelessWidget {
                           ? Icons.favorite
                           : Icons.favorite_border,
                       color: Theme.of(context).colorScheme.secondary),
-                  onPressed: () => product.favoriteToggle(),
+                  onPressed: () =>
+                      product.favoriteToggle(auth.token!, auth.userId),
                 )),
           ),
           title: Text(
