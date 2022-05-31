@@ -23,9 +23,13 @@ class OrderProvider with ChangeNotifier {
     return [..._items];
   }
 
+  String? authToken;
+
+  OrderProvider(this.authToken, this._items);
+
   Future<void> addOrder(List<CartItem> products, String total) async {
     final url = Uri.parse(
-        'https://flutter-shop-app-20e7e-default-rtdb.firebaseio.com/orders.json');
+        'https://flutter-shop-app-20e7e-default-rtdb.firebaseio.com/orders.json?auth=$authToken');
     final dateTime = DateTime.now();
     final response = await http.post(url,
         body: json.encode({
@@ -53,7 +57,7 @@ class OrderProvider with ChangeNotifier {
 
   Future<void> fetchAndSet() async {
     final url = Uri.parse(
-        'https://flutter-shop-app-20e7e-default-rtdb.firebaseio.com/orders.json');
+        'https://flutter-shop-app-20e7e-default-rtdb.firebaseio.com/orders.json?auth=$authToken');
     final response = await http.get(url);
     final data = json.decode(response.body) as Map<String, dynamic>;
     final List<Order> loadedOrder = [];

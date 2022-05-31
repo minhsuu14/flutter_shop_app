@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_shop_app/models/auth.dart';
 import 'package:provider/provider.dart';
 
 import './models/app_theme.dart';
@@ -10,6 +11,7 @@ import './screens/cart_screen.dart';
 import './screens/order_screen.dart';
 import './screens/product_manager_screen.dart';
 import './screens/edit_product_screen.dart';
+import './screens/auth_screen.dart';
 import './providers/product_provider.dart';
 
 void main() {
@@ -24,21 +26,37 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
-        ChangeNotifierProvider(create: (ctx) => ProductProvider()),
+        ChangeNotifierProvider(create: (ctx) => AuthProvider()),
+        ChangeNotifierProxyProvider<AuthProvider, ProductProvider>(
+          create: (ctx) => ProductProvider('', [], ''),
+          update: (ctx, auth, product) => ProductProvider(
+              auth.token, product == null ? [] : product.items, auth.userId),
+        ),
+        ChangeNotifierProxyProvider<AuthProvider, OrderProvider>(
+          create: (ctx) => OrderProvider('', []),
+          update: (ctx, auth, order) =>
+              OrderProvider(auth.token, order == null ? [] : order.items),
+        ),
         ChangeNotifierProvider(create: (ctx) => CartProvider()),
-        ChangeNotifierProvider(create: (ctx) => OrderProvider()),
       ],
-      child: MaterialApp(
-        title: 'Flutter Demo',
-        theme: theme,
-        home: const ProductOverviewScreen(),
-        routes: {
-          ProductDetailScreen.routeName: (ctx) => const ProductDetailScreen(),
-          CartScreen.routeName: (ctx) => const CartScreen(),
-          OrderScreen.routeName: (ctx) => const OrderScreen(),
-          ProductManagerScreen.routeName: (ctx) => const ProductManagerScreen(),
-          EditProductScreen.routeName: (ctx) => const EditProductScreen(),
-        },
+      child: Consumer<AuthProvider>(
+        builder: (ctx, auth, _) => MaterialApp(
+          title: 'Flutter Demo',
+          theme: theme,
+          home:
+              auth.isAuth ? const ProductOverviewScreen() : const AuthScreen(),
+          routes: {
+            ProductOverviewScreen.routeName: (ctx) =>
+                const ProductOverviewScreen(),
+            ProductDetailScreen.routeName: (ctx) => const ProductDetailScreen(),
+            CartScreen.routeName: (ctx) => const CartScreen(),
+            OrderScreen.routeName: (ctx) => const OrderScreen(),
+            ProductManagerScreen.routeName: (ctx) =>
+                const ProductManagerScreen(),
+            EditProductScreen.routeName: (ctx) => const EditProductScreen(),
+          },
+          debugShowCheckedModeBanner: false,
+        ),
       ),
     );
   }
