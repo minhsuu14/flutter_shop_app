@@ -12,7 +12,6 @@ class AuthProvider with ChangeNotifier {
     if (_expireDate != null &&
         _expireDate!.isAfter(DateTime.now()) &&
         _token != null) {
-      print(_token);
       return _token;
     }
     return null;
@@ -58,5 +57,12 @@ class AuthProvider with ChangeNotifier {
   Future<void> signIn(String email, String password) async {
     return _authenticate(email, password,
         'https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyApSK5rV-xSUdAhTwXAER9oCc-Asw6HR6A');
+  }
+
+  void logOut() {
+    _token = null;
+    _expireDate = null;
+    _userId = null;
+    notifyListeners();
   }
 }
