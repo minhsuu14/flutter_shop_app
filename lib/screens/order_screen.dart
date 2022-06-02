@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 
 import '../models/order.dart';
 import '../widgets/order_item.dart';
+import '../widgets/custom_appbar.dart';
 
 class OrderScreen extends StatefulWidget {
   static const routeName = '/order-screen';
@@ -29,8 +30,8 @@ class _OrderScreenState extends State<OrderScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('My Orders'),
+      appBar: CustomAppBar(
+        title: 'My orders',
       ),
       body: FutureBuilder(
         future: _orderFuture,

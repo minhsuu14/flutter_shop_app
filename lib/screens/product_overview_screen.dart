@@ -6,6 +6,7 @@ import '../widgets/app_drawer.dart';
 import '../widgets/product_item.dart';
 import '../widgets/badge.dart';
 import '../models/cart.dart';
+import '../widgets/custom_appbar.dart';
 
 enum FilterProduct {
   showFavorite,
@@ -47,9 +48,9 @@ class _ProductOverviewScreenState extends State<ProductOverviewScreen> {
     var products =
         _showFavorite ? productProvider.favoriteItems : productProvider.items;
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('My Shop'),
-        actions: <Widget>[
+      appBar: CustomAppBar(
+        title: 'My shop',
+        action: <Widget>[
           PopupMenuButton(
             icon: const Icon(Icons.more_vert),
             onSelected: (FilterProduct filter) {
@@ -91,17 +92,20 @@ class _ProductOverviewScreenState extends State<ProductOverviewScreen> {
           ? const Center(
               child: CircularProgressIndicator(),
             )
-          : GridView.builder(
-              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 2,
-                  childAspectRatio: 3 / 2,
-                  crossAxisSpacing: 10,
-                  mainAxisSpacing: 10),
-              itemBuilder: (ctx, i) => ChangeNotifierProvider.value(
-                value: products[i],
-                child: const ProductItem(),
+          : Padding(
+              padding: const EdgeInsets.all(20),
+              child: GridView.builder(
+                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 2,
+                    childAspectRatio: 3 / 2,
+                    crossAxisSpacing: 10,
+                    mainAxisSpacing: 10),
+                itemBuilder: (ctx, i) => ChangeNotifierProvider.value(
+                  value: products[i],
+                  child: const ProductItem(),
+                ),
+                itemCount: products.length,
               ),
-              itemCount: products.length,
             ),
       drawer: const AppDrawer(),
     );

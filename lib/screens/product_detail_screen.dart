@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import '../models/product_provider.dart';
 import '../utils/button_box.dart';
@@ -221,28 +220,34 @@ class ProductDetailScreen extends StatelessWidget {
                 ),
                 Positioned(
                   bottom: 0,
-                  left: 0,
+                  left: constraints.maxWidth * 0.15,
                   child: Container(
-                      color: Colors.grey.shade50,
                       padding: const EdgeInsets.symmetric(
                           horizontal: 20, vertical: 10),
-                      width: constraints.maxWidth,
-                      child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            SquareIconButton(
-                              icon: Icons.shopping_bag,
-                              onPressed: () {},
-                              buttonColor: COLOR_ORANGE,
-                              iconColor: Colors.white,
-                            ),
-                            addHorizontalSpace(30),
-                            Text(
-                              'Add to cart',
-                              style: textTheme.headline4!
-                                  .apply(color: COLOR_ORANGE),
-                            )
-                          ])),
+                      margin: const EdgeInsets.only(bottom: 10),
+                      width: constraints.maxWidth * 0.7,
+                      decoration: const BoxDecoration(
+                        borderRadius: BorderRadius.all(Radius.circular(18)),
+                        color: Colors.deepOrange,
+                      ),
+                      child: InkWell(
+                        onTap: () {},
+                        child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              const Icon(
+                                Icons.shopping_bag,
+                                size: 35,
+                                color: Colors.white,
+                              ),
+                              addHorizontalSpace(50),
+                              Text(
+                                'Add to cart',
+                                style: textTheme.headline4!
+                                    .apply(color: Colors.white),
+                              )
+                            ]),
+                      )),
                 )
               ]),
             );

@@ -1,9 +1,12 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
+import '../utils/constants.dart';
 import '../models/exception.dart';
 import '../models/auth.dart';
 import 'package:provider/provider.dart';
+import '../utils/widget_functions.dart';
 
 enum AuthMode { Signup, Login }
 
@@ -17,72 +20,53 @@ class AuthScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final deviceSize = MediaQuery.of(context).size;
+    final textTheme = Theme.of(context).textTheme;
     // final transformConfig = Matrix4.rotationZ(-8 * pi / 180);
     // transformConfig.translate(-10.0);
     return Scaffold(
       // resizeToAvoidBottomInset: false,
-      body: Stack(
-        children: <Widget>[
-          Container(
-            decoration: BoxDecoration(
-              gradient: LinearGradient(
-                colors: [
-                  const Color.fromRGBO(215, 117, 255, 1).withOpacity(0.5),
-                  const Color.fromRGBO(255, 188, 117, 1).withOpacity(0.9),
-                ],
-                begin: Alignment.topLeft,
-                end: Alignment.bottomRight,
-                stops: const [0, 1],
-              ),
-            ),
-          ),
-          SingleChildScrollView(
-            child: Container(
-              height: deviceSize.height,
-              width: deviceSize.width,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: <Widget>[
-                  Flexible(
-                    child: Container(
-                      margin: const EdgeInsets.only(bottom: 20.0),
-                      padding: const EdgeInsets.symmetric(
-                          vertical: 8.0, horizontal: 94.0),
-                      transform: Matrix4.rotationZ(-8 * pi / 180)
-                        ..translate(-10.0),
-                      // ..translate(-10.0),
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(20),
-                        color: Colors.deepOrange.shade900,
-                        boxShadow: const [
-                          BoxShadow(
-                            blurRadius: 8,
-                            color: Colors.black26,
-                            offset: Offset(0, 2),
-                          )
-                        ],
-                      ),
-                      child: Text(
-                        'MyShop',
-                        style: TextStyle(
-                          color: Colors.orange[400],
-                          fontSize: 50,
-                          fontFamily: 'Anton',
-                          fontWeight: FontWeight.normal,
+      body: LayoutBuilder(
+        builder: ((context, constraints) => Stack(
+              children: <Widget>[
+                SingleChildScrollView(
+                  child: Container(
+                    height: constraints.maxHeight,
+                    width: constraints.maxWidth,
+                    padding: const EdgeInsets.only(top: 50),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: <Widget>[
+                        Container(
+                            height: 76,
+                            width: 76,
+                            decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              color: Theme.of(context).primaryColor,
+                            ),
+                            child: Center(
+                              child: Text(
+                                'E',
+                                style: textTheme.headline3!.apply(
+                                    color: Colors.white, fontWeightDelta: 4),
+                              ),
+                            )),
+                        addVerticalSpace(constraints.maxHeight * 0.17),
+                        Text(
+                          'Login to E-Shop',
+                          style: textTheme.headline6!.apply(fontWeightDelta: 4),
                         ),
-                      ),
+                        addVerticalSpace(20),
+                        Flexible(
+                          flex: deviceSize.width > 600 ? 2 : 1,
+                          child: const AuthCard(),
+                        ),
+                      ],
                     ),
                   ),
-                  Flexible(
-                    flex: deviceSize.width > 600 ? 2 : 1,
-                    child: const AuthCard(),
-                  ),
-                ],
-              ),
-            ),
-          ),
-        ],
+                ),
+              ],
+            )),
       ),
     );
   }
@@ -176,24 +160,33 @@ class _AuthCardState extends State<AuthCard> {
   @override
   Widget build(BuildContext context) {
     final deviceSize = MediaQuery.of(context).size;
+    final textTheme = Theme.of(context).textTheme;
     return Card(
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(10.0),
       ),
       elevation: 8.0,
       child: Container(
-        height: _authMode == AuthMode.Signup ? 320 : 260,
+        height: _authMode == AuthMode.Signup ? 380 : 310,
         constraints:
-            BoxConstraints(minHeight: _authMode == AuthMode.Signup ? 320 : 260),
+            BoxConstraints(minHeight: _authMode == AuthMode.Signup ? 340 : 280),
         width: deviceSize.width * 0.75,
         padding: const EdgeInsets.all(16.0),
         child: Form(
           key: _formKey,
           child: SingleChildScrollView(
             child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
                 TextFormField(
-                  decoration: const InputDecoration(labelText: 'E-Mail'),
+                  decoration: InputDecoration(
+                    labelText: 'E-Mail',
+                    labelStyle: textTheme.subtitle1!
+                        .apply(fontWeightDelta: 2, color: Colors.grey),
+                    border: const OutlineInputBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(10))),
+                    prefixIcon: const Icon(Icons.person_outlined),
+                  ),
                   keyboardType: TextInputType.emailAddress,
                   validator: (value) {
                     if (value == null ||
@@ -207,8 +200,15 @@ class _AuthCardState extends State<AuthCard> {
                     _authData['email'] = value!;
                   },
                 ),
+                addVerticalSpace(10),
                 TextFormField(
-                  decoration: const InputDecoration(labelText: 'Password'),
+                  decoration: InputDecoration(
+                      labelText: 'Password',
+                      border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10)),
+                      labelStyle: textTheme.subtitle1!
+                          .apply(fontWeightDelta: 2, color: COLOR_GREY),
+                      prefixIcon: const Icon(Icons.lock_outline)),
                   obscureText: true,
                   controller: _passwordController,
                   textInputAction: TextInputAction.done,
@@ -223,11 +223,17 @@ class _AuthCardState extends State<AuthCard> {
                     _authData['password'] = value!;
                   },
                 ),
+                addVerticalSpace(10),
                 if (_authMode == AuthMode.Signup)
                   TextFormField(
                     enabled: _authMode == AuthMode.Signup,
-                    decoration:
-                        const InputDecoration(labelText: 'Confirm Password'),
+                    decoration: InputDecoration(
+                        labelText: 'Confirm Password',
+                        prefixIcon: const Icon(Icons.lock_open_outlined),
+                        labelStyle: textTheme.subtitle1!
+                            .apply(color: COLOR_GREY, fontWeightDelta: 2),
+                        border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(10))),
                     obscureText: true,
                     validator: _authMode == AuthMode.Signup
                         ? (value) {
@@ -244,32 +250,32 @@ class _AuthCardState extends State<AuthCard> {
                 if (_isLoading)
                   const CircularProgressIndicator()
                 else
-                  ElevatedButton(
-                    child:
-                        Text(_authMode == AuthMode.Login ? 'LOGIN' : 'SIGN UP'),
-                    onPressed: _submit,
-                    style: ElevatedButton.styleFrom(
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(30),
-                      ),
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 30.0, vertical: 8.0),
-                      primary: Theme.of(context).primaryColor,
-                      textStyle: const TextStyle(
-                        color: Colors.white70,
-                      ),
+                  Container(
+                    padding: const EdgeInsets.all(13),
+                    decoration: BoxDecoration(
+                        color: Theme.of(context).primaryColor,
+                        borderRadius: BorderRadius.circular(15)),
+                    child: InkWell(
+                      splashColor: Colors.deepOrange[700],
+                      onTap: _submit,
+                      child: Center(
+                          child: Text(
+                        'LOGIN',
+                        style: textTheme.headline6!.apply(color: Colors.white),
+                      )),
                     ),
                   ),
+                addVerticalSpace(10),
                 TextButton(
                   child: Text(
-                      '${_authMode == AuthMode.Login ? 'SIGNUP' : 'LOGIN'} INSTEAD'),
+                    '${_authMode == AuthMode.Login ? 'SIGNUP' : 'LOGIN'} INSTEAD',
+                  ),
                   onPressed: _switchAuthMode,
                   style: TextButton.styleFrom(
                     padding: const EdgeInsets.symmetric(
                         horizontal: 30.0, vertical: 4),
-                    textStyle: TextStyle(
-                      color: Theme.of(context).primaryColor,
-                    ),
+                    textStyle: textTheme.subtitle2!
+                        .apply(color: Theme.of(context).primaryColor),
                   ),
                 ),
               ],
