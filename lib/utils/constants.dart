@@ -23,3 +23,9 @@ TextTheme defaultText = TextTheme(
     subtitle2: GoogleFonts.nunito(fontSize: 14, fontWeight: FontWeight.w400),
     button: GoogleFonts.nunito(fontSize: 14, fontWeight: FontWeight.w400),
     caption: GoogleFonts.nunito(fontSize: 12, fontWeight: FontWeight.normal));
+
+List<String> imagesSlider = [
+  'assets/images/lisa.jpg',
+  'assets/images/lisa1.jpg',
+  'assets/images/lisa2.jpg'
+];
