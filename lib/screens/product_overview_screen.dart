@@ -6,7 +6,7 @@ import '../widgets/app_drawer.dart';
 import '../widgets/product_item.dart';
 import '../widgets/badge.dart';
 import '../models/cart.dart';
-import '../widgets/custom_appbar.dart';
+import '../utils/custom_appbar.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import '../utils/constants.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';

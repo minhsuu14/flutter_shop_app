@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import '../models/product.dart';
 import '../models/product_provider.dart';
 import 'package:provider/provider.dart';
-import '../widgets/custom_appbar.dart';
+import '../utils/custom_appbar.dart';
 
 class EditProductScreen extends StatefulWidget {
   static const routeName = '/edit-product-screen';

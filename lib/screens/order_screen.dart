@@ -4,7 +4,7 @@ import 'package:provider/provider.dart';
 
 import '../models/order.dart';
 import '../widgets/order_item.dart';
-import '../widgets/custom_appbar.dart';
+import '../utils/custom_appbar.dart';
 
 class OrderScreen extends StatefulWidget {
   static const routeName = '/order-screen';

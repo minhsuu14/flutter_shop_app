@@ -3,7 +3,7 @@ import '../screens/product_manager_screen.dart';
 import '../screens/order_screen.dart';
 import '../models/auth.dart';
 import 'package:provider/provider.dart';
-import './custom_appbar.dart';
+import '../utils/custom_appbar.dart';
 
 class AppDrawer extends StatelessWidget {
   const AppDrawer({Key? key}) : super(key: key);

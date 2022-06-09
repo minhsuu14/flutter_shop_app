@@ -5,7 +5,7 @@ import '../models/product_provider.dart';
 import '../models/product.dart';
 import '../widgets/product_manager_item.dart';
 import '../screens/edit_product_screen.dart';
-import '../widgets/custom_appbar.dart';
+import '../utils/custom_appbar.dart';
 import '../utils/button_box.dart';
 
 class ProductManagerScreen extends StatelessWidget {
@@ -34,6 +34,7 @@ class ProductManagerScreen extends StatelessWidget {
                   id: products[i].id,
                   title: products[i].title,
                   imgUrl: products[i].imageUrl,
+                  price: products[i].price,
                 );
               },
               itemCount: products.length),
@@ -41,13 +42,16 @@ class ProductManagerScreen extends StatelessWidget {
         ),
       ),
       drawer: const AppDrawer(),
-      floatingActionButton: SquareIconButton(
-        icon: Icons.add,
-        iconColor: Colors.white,
-        width: 50,
-        onPressed: () =>
-            Navigator.of(context).pushNamed(EditProductScreen.routeName),
-        buttonColor: Theme.of(context).primaryColor,
+      floatingActionButton: Padding(
+        padding: const EdgeInsets.all(20),
+        child: SquareIconButton(
+          icon: Icons.add,
+          iconColor: Colors.white,
+          width: 50,
+          onPressed: () =>
+              Navigator.of(context).pushNamed(EditProductScreen.routeName),
+          buttonColor: Theme.of(context).primaryColor,
+        ),
       ),
     );
   }
