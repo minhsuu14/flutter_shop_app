@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import '../screens/product_manager_screen.dart';
 import '../screens/order_screen.dart';
+import '../models/auth.dart';
+import 'package:provider/provider.dart';
+import '../utils/custom_appbar.dart';
 
 class AppDrawer extends StatelessWidget {
   const AppDrawer({Key? key}) : super(key: key);
@@ -9,8 +12,8 @@ class AppDrawer extends StatelessWidget {
   Widget build(BuildContext context) {
     return Drawer(
       child: Column(children: [
-        AppBar(
-          title: const Text('Welcome!'),
+        CustomAppBar(
+          title: 'Welcome!',
           automaticallyImplyLeading: false,
         ),
         const Divider(),
@@ -33,6 +36,14 @@ class AppDrawer extends StatelessWidget {
           onTap: () => Navigator.pushReplacementNamed(
               context, ProductManagerScreen.routeName),
         ),
+        const Divider(),
+        ListTile(
+            leading: const Icon(Icons.exit_to_app),
+            title: const Text('Log Out'),
+            onTap: () {
+              Navigator.of(context).pop();
+              Provider.of<AuthProvider>(context, listen: false).logOut();
+            }),
       ]),
     );
   }

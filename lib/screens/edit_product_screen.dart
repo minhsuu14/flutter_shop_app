@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import '../models/product.dart';
-import '../providers/product_provider.dart';
+import '../models/product_provider.dart';
 import 'package:provider/provider.dart';
+import '../utils/custom_appbar.dart';
 
 class EditProductScreen extends StatefulWidget {
   static const routeName = '/edit-product-screen';
@@ -131,8 +132,8 @@ class _EditProductScreenState extends State<EditProductScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Product Editing'),
+      appBar: CustomAppBar(
+        title: 'Product Editing',
       ),
       body: isLoading
           ? const Center(
@@ -234,10 +235,14 @@ class _EditProductScreenState extends State<EditProductScreen> {
                               decoration: BoxDecoration(
                                   border: Border.all(
                                 color: Colors.grey,
+                                width: 2,
                               )),
                               margin: const EdgeInsets.all(5),
                               child: _imgUrlController.text.isEmpty
-                                  ? const Text('Enter the image URL')
+                                  ? const Text(
+                                      'Enter the image URL',
+                                      textAlign: TextAlign.center,
+                                    )
                                   : Image.network(_imgUrlController.text),
                             ),
                             Expanded(
@@ -274,13 +279,14 @@ class _EditProductScreenState extends State<EditProductScreen> {
                           ],
                         ),
                         const SizedBox(
-                          height: 10,
+                          height: 20,
                         ),
                         ElevatedButton(
                           onPressed: _saveForm,
                           child: const Text('Save'),
                           style: ElevatedButton.styleFrom(
-                              primary: Theme.of(context).colorScheme.primary),
+                              primary: Theme.of(context).colorScheme.primary,
+                              textStyle: Theme.of(context).textTheme.subtitle1),
                         ),
                       ],
                     ),

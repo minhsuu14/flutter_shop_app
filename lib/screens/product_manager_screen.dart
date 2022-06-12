@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../widgets/app_drawer.dart';
-import '../providers/product_provider.dart';
+import '../models/product_provider.dart';
 import '../models/product.dart';
 import '../widgets/product_manager_item.dart';
 import '../screens/edit_product_screen.dart';
+import '../utils/custom_appbar.dart';
+import '../utils/button_box.dart';
 
 class ProductManagerScreen extends StatelessWidget {
   static const routeName = '/product-manager-screen';
@@ -20,8 +22,8 @@ class ProductManagerScreen extends StatelessWidget {
     final productProvider = Provider.of<ProductProvider>(context);
     final List<Product> products = productProvider.items;
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Product Manager'),
+      appBar: CustomAppBar(
+        title: 'Product Manager',
       ),
       body: RefreshIndicator(
         onRefresh: () => fetchData(context),
@@ -32,21 +34,24 @@ class ProductManagerScreen extends StatelessWidget {
                   id: products[i].id,
                   title: products[i].title,
                   imgUrl: products[i].imageUrl,
+                  price: products[i].price,
                 );
               },
               itemCount: products.length),
-          padding: const EdgeInsets.all(8),
+          padding: const EdgeInsets.all(10),
         ),
       ),
       drawer: const AppDrawer(),
-      floatingActionButton: FloatingActionButton(
-        child: const Text(
-          '+',
-          style: TextStyle(fontSize: 24, color: Colors.white60),
+      floatingActionButton: Padding(
+        padding: const EdgeInsets.all(20),
+        child: SquareIconButton(
+          icon: Icons.add,
+          iconColor: Colors.white,
+          width: 50,
+          onPressed: () =>
+              Navigator.of(context).pushNamed(EditProductScreen.routeName),
+          buttonColor: Theme.of(context).primaryColor,
         ),
-        onPressed: () =>
-            Navigator.of(context).pushNamed(EditProductScreen.routeName),
-        backgroundColor: Theme.of(context).primaryColor,
       ),
     );
   }
