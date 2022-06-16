@@ -61,8 +61,6 @@ class AuthProvider with ChangeNotifier {
 
   void logOut() {
     _token = null;
-    _expireDate = null;
-    _userId = null;
     notifyListeners();
   }
 }

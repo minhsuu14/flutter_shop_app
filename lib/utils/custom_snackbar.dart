@@ -16,9 +16,9 @@ SnackBar mySnackBar(BuildContext context, String textContent) {
         child: Stack(
           clipBehavior: Clip.none,
           children: [
-            Column(mainAxisAlignment: MainAxisAlignment.start, children: [
+            Column(crossAxisAlignment: CrossAxisAlignment.center, children: [
               Text(
-                'Great!',
+                'Great !',
                 style: textTheme.subtitle1!
                     .apply(fontWeightDelta: 2, color: Colors.white),
               ),
@@ -45,12 +45,16 @@ SnackBar mySnackBar(BuildContext context, String textContent) {
                 onTap: () =>
                     ScaffoldMessenger.of(context).hideCurrentSnackBar(),
                 child: Container(
-                  padding: const EdgeInsets.all(10),
+                  decoration: const BoxDecoration(
+                    color: Colors.white,
+                    shape: BoxShape.circle,
+                  ),
+                  padding: const EdgeInsets.all(8),
                   child: SvgPicture.asset(
                     'assets/images/cancel-close-delete-svgrepo-com.svg',
                     height: 20,
                     width: 20,
-                    color: Colors.white,
+                    color: Theme.of(context).primaryColor,
                   ),
                 ),
               ),
